@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Shopsphere | Home</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<!-- INTERNAL CSS (teacher requirement) -->
+<style>
+.hero h1 {
+    letter-spacing: 1px;
+}
+</style>
+</head>
+
+<body data-protected="true">
+
+<header class="header">
+    <div class="logo">
+        <span class="logo-shop">Shop</span><span class="logo-ease">sphere</span>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="cart.html">Cart (<span id="nav-cart-count">0</span>)</a>
+        <a href="feedback.html">Feedback</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Shop Smart. Shop Easy.</h1>
+    <p style="font-weight:bold;">Trusted Online Store</p> <!-- INLINE CSS -->
+</section>
+
+<section class="products-section">
+<h2>Featured Products</h2>
+
+<div class="product-list">
+
+<div class="product-card" onclick="openModal(
+'Wireless Headphones','₹1500','images/headphones.jpg',
+'High quality wireless headphones.',1500)">
+<img src="images/headphones.jpg">
+<h3>Wireless Headphones</h3>
+<p class="price">₹1500</p>
+</div>
+
+<div class="product-card" onclick="openModal(
+'Smart Watch','₹2200','images/watch.jpg',
+'Smart watch with health tracking.',2200)">
+<img src="images/watch.jpg">
+<h3>Smart Watch</h3>
+<p class="price">₹2200</p>
+</div>
+
+<div class="product-card" onclick="openModal(
+'Leather Bag','₹5500','images/bag1.jpg',
+'Office bag for ladies.',5500)">
+<img src="images/bag1.jpg">
+<h3>Leather Bag</h3>
+<p class="price">₹5500</p>
+</div>
+
+</div>
+</section>
+
+<!-- MODAL -->
+<div id="product-modal" class="modal">
+<div class="modal-content">
+<span class="close-btn" onclick="closeModal()">×</span>
+<img id="modal-img">
+<h3 id="modal-title"></h3>
+<p id="modal-desc"></p>
+<p id="modal-price"></p>
+<button id="modal-cart-btn" onclick="addToCart()">Add to Cart</button>
+</div>
+</div>
+
+<footer class="footer">
+<p>© 2025 Shopsphere</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback | Shopsphere</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<!-- INTERNAL CSS -->
+<style>
+.feedback-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+}
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+input, textarea, select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+textarea {
+    resize: none;
+    height: 90px;
+}
+button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+.success { color: green; text-align: center; }
+.error { color: red; text-align: center; }
+</style>
+</head>
+
+<body data-protected="true">
+
+<header class="header">
+    <div class="logo">
+        <span class="logo-shop">Shop</span><span class="logo-ease">sphere</span>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="cart.html">Cart</a>
+        <a href="about.html">About</a>
+        <a href="feedback.html">Feedback</a>
+    </nav>
+</header>
+
+<div class="feedback-container">
+<h2 style="text-align:center;">Customer Feedback</h2> <!-- INLINE CSS -->
+
+<form id="feedback-form">
+    <label>Name</label>
+    <input type="text" id="name">
+
+    <label>Email</label>
+    <input type="email" id="email">
+
+    <label>Rating</label>
+    <select id="rating">
+        <option value="">Select rating</option>
+        <option>1</option><option>2</option>
+        <option>3</option><option>4</option><option>5</option>
+    </select>
+
+    <label>Feedback</label>
+    <textarea id="feedback"></textarea>
+
+    <button type="submit">Submit</button>
+</form>
+
+<p id="msg"></p>
+</div>
+
+<script>
+document.getElementById("feedback-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = nameInput = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const rating = document.getElementById("rating").value;
+    const feedback = document.getElementById("feedback").value.trim();
+    const msg = document.getElementById("msg");
+
+    if (!name || !email || !rating || !feedback) {
+        msg.textContent = "Please fill all fields";
+        msg.className = "error";
+        return;
+    }
+
+    let data = JSON.parse(localStorage.getItem("feedbacks")) || [];
+    data.push({ name, email, rating, feedback });
+    localStorage.setItem("feedbacks", JSON.stringify(data));
+
+    msg.textContent = "Thank you for your feedback!";
+    msg.className = "success";
+    this.reset();
+});
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart | Shopsphere</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<style>
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background: #f0f0f0;
+}
+button {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+.qty { background: #3498db; color: white; }
+.remove { background: #e67e22; color: white; }
+.clear { background: #c0392b; color: white; margin-top: 10px; }
+.summary {
+    text-align: right;
+    margin-top: 15px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body data-protected="true">
+
+<header class="header">
+    <div class="logo">
+        <span class="logo-shop">Shop</span><span class="logo-ease">sphere</span>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="cart.html">Cart (<span id="nav-cart-count">0</span>)</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h2>Your Cart</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="cart-items"></tbody>
+    </table>
+
+    <div class="summary">
+        Total Items: <span id="item-count">0</span><br>
+        Grand Total: ₹<span id="total-price">0</span><br>
+        <button class="clear" onclick="clearCart()">Clear Cart</button>
+    </div>
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function renderCart() {
+    const body = document.getElementById("cart-items");
+    body.innerHTML = "";
+
+    let total = 0, count = 0;
+
+    if (cart.length === 0) {
+        body.innerHTML = "<tr><td colspan='5'>Cart is empty</td></tr>";
+    }
+
+    cart.forEach((item, i) => {
+        const sub = item.price * item.quantity;
+        total += sub;
+        count += item.quantity;
+
+        body.innerHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td>₹${item.price}</td>
+                <td>
+                    <button class="qty" onclick="changeQty(${i}, -1)">-</button>
+                    ${item.quantity}
+                    <button class="qty" onclick="changeQty(${i}, 1)">+</button>
+                </td>
+                <td>₹${sub}</td>
+                <td>
+                    <button class="remove" onclick="removeItem(${i})">Remove</button>
+                </td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("item-count").textContent = count;
+    document.getElementById("total-price").textContent = total;
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function changeQty(i, diff) {
+    cart[i].quantity += diff;
+    if (cart[i].quantity <= 0) cart.splice(i, 1);
+    renderCart();
+}
+
+function removeItem(i) {
+    cart.splice(i, 1);
+    renderCart();
+}
+
+function clearCart() {
+    cart = [];
+    renderCart();
+}
+
+renderCart();
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>
