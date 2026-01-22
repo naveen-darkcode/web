@@ -59,7 +59,7 @@ button {
 </header>
 
 <div class="feedback-container">
-<h2 style="text-align:center;">Customer Feedback</h2> <!-- INLINE CSS -->
+<h2 style="text-align:center;">Customer Feedback</h2>
 
 <form id="feedback-form">
     <label>Name</label>
@@ -88,7 +88,7 @@ button {
 document.getElementById("feedback-form").addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const name = nameInput = document.getElementById("name").value.trim();
+    const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
     const rating = document.getElementById("rating").value;
     const feedback = document.getElementById("feedback").value.trim();
@@ -100,11 +100,38 @@ document.getElementById("feedback-form").addEventListener("submit", function(e) 
         return;
     }
 
+    // SAVE TO LOCAL STORAGE
     let data = JSON.parse(localStorage.getItem("feedbacks")) || [];
     data.push({ name, email, rating, feedback });
     localStorage.setItem("feedbacks", JSON.stringify(data));
 
-    msg.textContent = "Thank you for your feedback!";
+    // CREATE TEXT FILE CONTENT
+    const feedbackText =
+`Customer Feedback
+------------------
+Name: ${name}
+Email: ${email}
+Rating: ${rating}
+
+Message:
+${feedback}
+`;
+
+    // DOWNLOAD TEXT FILE
+    const blob = new Blob([feedbackText], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = `feedback_${Date.now()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // SUCCESS MESSAGE
+    msg.textContent = "Thank you for your feedback! File downloaded.";
     msg.className = "success";
     this.reset();
 });
